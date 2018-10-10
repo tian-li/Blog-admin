@@ -1,0 +1,18 @@
+<form class="blog-editor" [formGroup]="form">
+  <div class="editor-container" fxLayout="column" fxLayoutGap="20px">
+    <div class="editor-title" fxLayout="row">
+      <input matInput type="text" placeholder="Title" formControlName="title">
+    </div>
+    <div class="editor-content" fxLayout="row" fxLayoutGap="20px">
+      <div class="editor-content-text" fxFlex="50">
+        <textarea matInput placeholder="Content" cols="90" rows="40" formControlName="content"></textarea>
+      </div>
+      <div class="editor-content-preview markdown-body" fxFlex="50" [innerHTML]="form?.controls?.content?.value | markdown"></div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end center">
+      <button mat-raised-button>Cancel</button>
+      <button mat-raised-button color="primary">Save</button>
+      </div>
+  </div>
+  
+</form>

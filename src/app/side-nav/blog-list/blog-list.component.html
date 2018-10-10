@@ -1,0 +1,7 @@
+<ul class="blog-list">
+  <li class="blog-list-item" *ngFor="let blog of blogs$ | async; let first = first; let last = last; let i=index;">
+    <a [routerLink]="['./blog', blog.id, 'edit']">
+      {{blog.title}}
+    </a>
+  </li>
+</ul>
