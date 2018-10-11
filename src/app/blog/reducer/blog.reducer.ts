@@ -22,81 +22,49 @@ export const initialState: State = adapter.getInitialState({
   selectedBlogId: undefined,
 });
 
+
 export function reducer(state = initialState, action: BlogActionsUnion): State {
   switch (action.type) {
+    case BlogActionTypes.LOAD_ALL_BLOGS:
+    case BlogActionTypes.LOAD_ONE_BLOG:
+    case BlogActionTypes.ADD_BLOG:
+    case BlogActionTypes.EDIT_BLOG: {
+      return {
+        ...state,
+        selectedBlogId: undefined,
+        errorMessage: undefined,
+      }
+    }
+    case BlogActionTypes.LOAD_ALL_BLOGS_FAIL:
+    case BlogActionTypes.LOAD_ONE_BLOG_FAIL:
+    case BlogActionTypes.ADD_BLOG_FAIL:
+    case BlogActionTypes.EDIT_BLOG_FAIL: {
+      return {
+        ...state,
+        errorMessage: action.payload,
+      }
+    }
     case BlogActionTypes.LOAD_ALL_BLOGS_SUCCESS: {
-      console.log('action', action)
-      return adapter.addAll(action.payload, { ...state, errorMessage: undefined });
-    }
-    case BlogActionTypes.LOAD_ALL_BLOGS_FAIL: {
-      return {
-        ...state,
-        errorMessage: action.payload,
-      };
-    }
-    case BlogActionTypes.LOAD_ALL_BLOG_COUNT_SUCCESS: {
-      return {
-        ...state,
-        allBlogCount: action.payload,
-        errorMessage: undefined,
-      };
-    }
-    case BlogActionTypes.LOAD_ALL_BLOG_COUNT_FAIL: {
-      return {
-        ...state,
-        errorMessage: action.payload,
-      };
-    }
-    case BlogActionTypes.LOAD_ALL_BLOGS_INFO_SUCCESS: {
-      return {
-        ...state,
-        allBlogCount: action.payload.allBlogCount,
-        allBlogCreateTimes: action.payload.allBlogCreateTimes,
-        errorMessage: undefined,
-      };
-    }
-    case BlogActionTypes.LOAD_ALL_BLOGS_INFO_FAIL: {
-      return {
-        ...state,
-        errorMessage: action.payload,
-      };
-    }
-    case BlogActionTypes.LOAD_MULTIPLE_BLOGS_SUCCESS: {
-      return adapter.addMany(action.payload, { ...state, errorMessage: undefined });
-    }
-    case BlogActionTypes.LOAD_MULTIPLE_BLOGS_FAIL: {
-      return {
-        ...state,
-        errorMessage: action.payload,
-      };
-    }
-    case BlogActionTypes.LOAD_BLOGS_AT_PAGE_SUCCESS: {
-      return adapter.addMany(action.payload, {
-        ...adapter.removeAll(state),
-        errorMessage: undefined,
-      });
-    }
-    case BlogActionTypes.LOAD_BLOGS_AT_PAGE_FAIL: {
-      return {
-        ...state,
-        errorMessage: action.payload,
-      };
-    }
-    case BlogActionTypes.LOAD_ONE_BLOG: {
-      return { ...state, selectedBlogId: action.payload };
+      return adapter.addAll(action.payload, { ...state, errorMessage: 'Success' });
     }
     case BlogActionTypes.LOAD_ONE_BLOG_SUCCESS: {
       return adapter.addOne(action.payload, {
         ...state,
         selectedBlogId: action.payload.id,
-        errorMessage: undefined,
+        errorMessage: 'Success',
       });
     }
-    case BlogActionTypes.LOAD_ONE_BLOG_FAIL: {
-      return {
+    case BlogActionTypes.ADD_BLOG_SUCCESS: {
+      return adapter.addOne(action.payload, {
         ...state,
-        errorMessage: action.payload,
-      };
+        errorMessage: 'Success',
+      });
+    }
+    case BlogActionTypes.EDIT_BLOG_SUCCESS: {
+      return adapter.updateOne({ id: action.id, changes: action.changes }, {
+        ...state,
+        errorMessage: 'Success',
+      });
     }
     default: {
       return state;

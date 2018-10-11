@@ -12,10 +12,6 @@ export class BlogListItemComponent {
 
   @Input() blog: Blog;
 
-  ngOnInit() {
-    console.log('blog in item', this.blog)
-  }
-
   tagList(tags: string[]): string {
     return '';
   }

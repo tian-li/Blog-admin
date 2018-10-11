@@ -9,11 +9,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BlogModule } from './blog/blog.module';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { SideNavModule } from './side-nav/side-nav.module';
 
 @NgModule({
@@ -33,7 +31,7 @@ import { SideNavModule } from './side-nav/side-nav.module';
     SideNavModule,
     AppRoutingModule,
   ],
-  declarations: [AppComponent, AboutComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

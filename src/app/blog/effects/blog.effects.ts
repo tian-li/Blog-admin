@@ -9,18 +9,18 @@ import { map as _map } from 'lodash';
 import { Blog } from '../model/blog';
 import {
   BlogActionTypes,
-  LoadAllBlogsInfo,
-  LoadAllBlogsInfoSuccess,
-  LoadAllBlogsInfoFail,
   LoadOneBlog,
   LoadOneBlogSuccess,
   LoadOneBlogFail,
-  LoadBlogsAtPage,
-  LoadBlogsAtPageSuccess,
-  LoadBlogsAtPageFail,
   LoadAllBlogs,
   LoadAllBlogsSuccess,
   LoadAllBlogsFail,
+  AddBlog,
+  AddBlogSuccess,
+  AddBlogFail,
+  EditBlog,
+  EditBlogSuccess,
+  EditBlogFail,
 } from '../actions/blog.actions';
 import { BlogService } from '../service/blog.service';
 
@@ -39,31 +39,6 @@ export class BlogEffects {
   );
 
   @Effect()
-  loadAllBlogsInfo$: Observable<Action> = this.actions$.pipe(
-    ofType<LoadAllBlogsInfo>(BlogActionTypes.LOAD_ALL_BLOGS_INFO),
-    switchMap(() => {
-      return this.blogService.loadAllBlogsInfo()
-        .pipe(
-          map((blogsInfo: { allBlogCount: number, allBlogCreateTimes: number[] }) => new LoadAllBlogsInfoSuccess(blogsInfo)),
-          catchError((err: any) => of(new LoadAllBlogsInfoFail(err))),
-        );
-    }),
-  );
-
-  @Effect()
-  loadBlogsAtPage$: Observable<Action> = this.actions$.pipe(
-    ofType<LoadBlogsAtPage>(BlogActionTypes.LOAD_BLOGS_AT_PAGE),
-    map((action: LoadBlogsAtPage) => action.payload),
-    switchMap((payload: { startAtId: string, limit: number }) => {
-      return this.blogService.loadAtPage(payload.startAtId, payload.limit)
-        .pipe(
-          map((blogs: Blog[]) => new LoadBlogsAtPageSuccess(blogs)),
-          catchError((err: any) => of(new LoadBlogsAtPageFail(err))),
-        );
-    }),
-  );
-
-  @Effect()
   loadOneBlog$: Observable<Action> = this.actions$.pipe(
     ofType<LoadOneBlog>(BlogActionTypes.LOAD_ONE_BLOG),
     map((action: LoadOneBlog) => action.payload),
@@ -74,6 +49,37 @@ export class BlogEffects {
           catchError((err: any) => of(new LoadOneBlogFail(err))),
         );
     }),
+  );
+
+  @Effect()
+  addBlog$: Observable<Action> = this.actions$.pipe(
+    ofType<AddBlog>(BlogActionTypes.ADD_BLOG),
+    map((action: AddBlog) => action.payload),
+    switchMap((blog: any) => {
+      return this.blogService.addBlog(blog)
+      .pipe(
+        map((data)=> {
+          console.log('returned data after add', data);
+          return new AddBlogSuccess(data);
+        }),
+        catchError((err: any) => of(new AddBlogFail(err))),
+      )
+    })
+  );
+
+  @Effect()
+  editBlog$: Observable<Action> = this.actions$.pipe(
+    ofType<EditBlog>(BlogActionTypes.EDIT_BLOG),
+    map((action: EditBlog) => action.payload),
+    switchMap((payload: {id: string, blog: any}) => {
+      return this.blogService.editBlog(payload.id, payload.blog)
+      .pipe(
+        map((blog: Blog)=> {
+          return new EditBlogSuccess(blog.id, blog);
+        }),
+        catchError((err: any) => of(new EditBlogFail(err))),
+      )
+    })
   );
 
   constructor(

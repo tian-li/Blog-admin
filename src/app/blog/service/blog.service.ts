@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { from } from 'rxjs/observable/from';
+import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators/map';
+import { switchMap } from 'rxjs/operators/switchMap';
 import * as _ from 'lodash';
 
 import { Blog } from '../model/blog';
@@ -38,6 +40,22 @@ export class BlogService {
 
   loadAllBlogs(): Observable<Blog[]> {
     return this.createObservable(this.orderedBlogsCollection.get());
+  }
+
+  addBlog(blog: any): Observable<Blog> {
+    return from(this.blogsCollection.add(blog))
+      .pipe(switchMap((documentReference: any) => {
+        return from(documentReference.get()).pipe(map((documentSnapshot: any) => new Blog({ id: documentSnapshot.id, ...documentSnapshot.data() })));
+      }));
+  }
+
+  editBlog(id: string, blog: any): Observable<Blog> {
+    return from(this.blogsCollection.doc(id).update(blog))
+      .pipe(
+        switchMap((data: any) => {
+          return of(new Blog({ id, ...blog }));
+        }),
+      );
   }
 
   createObservable(promise: any): Observable<Blog[]> {

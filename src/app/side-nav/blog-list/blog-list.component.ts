@@ -28,7 +28,6 @@ export class BlogListComponent implements OnInit {
     this.blogs$ = this.store.pipe(select(fromBlog.getAllBlogs));
     this.store.pipe(select(fromBlog.getAllBlogCount)).subscribe((blogCount: number) => this.blogCount = blogCount);
     this.store.pipe(select(fromBlog.getAllBlogs)).subscribe((blogs) => {
-      console.log('blogs', blogs);
       this.blogs = blogs;
     })
   }

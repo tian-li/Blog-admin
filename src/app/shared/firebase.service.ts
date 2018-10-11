@@ -26,18 +26,4 @@ export class FirebaseService {
   get blogsCollectionRef() {
     return this.firestore.collection('blogs');
   }
-
-  addBlog(blog: { title: string, content: string }) {
-    const post: any = {
-      title: blog.title,
-      content: blog.content,
-      createdDate: new Date().valueOf(),
-    };
-    console.log('post', post);
-    this.blogCollectionRef.add(post)
-      .then((docRef) => {
-        console.log('doc added', docRef);
-      })
-      .catch((err) => console.log('add doc err', err));
-  }
 }
