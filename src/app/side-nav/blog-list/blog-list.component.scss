@@ -5,9 +5,16 @@
   margin-top: 40px;
 
   .blog-list-item {
+    line-height: 1.8em;
     list-style-type: none;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    a:hover {
+      color: #076DA6;
+    }
+    .active {
+      color: blue;
+    }
   }
 }

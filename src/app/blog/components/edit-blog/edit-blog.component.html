@@ -1,19 +1,28 @@
 <form class="blog-editor" [formGroup]="form">
-  <div class="editor-container" fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout="column">
     <div class="editor-title" fxFlex>
       <input matInput type="text" placeholder="Title" formControlName="title">
     </div>
-    
+
+    <div class="editor-controls" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div>
+        <mat-icon class="cancel" (click)="back()">keyboard_backspace</mat-icon>
+      </div>
+      <div>
+        <mat-icon class="save" (click)="save()">save_alt</mat-icon>
+      </div>
+      <div>
+        <!-- <mat-slide-toggle [labelPosition]="'before'" (change)="togglePreview()">
+          <mat-icon matPrefix class="preview">{{showPreview ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </mat-slide-toggle> -->
+      </div>
+    </div>
+
     <div class="editor-content" fxLayout="row" fxLayoutGap="20px">
-      <div class="editor-content-text" fxFlex="50">
+      <div class="editor-content-text" fxFlex="showPreview?50:100">
         <textarea matInput placeholder="Content" cols="90" rows="40" spellcheck="false" formControlName="content"></textarea>
       </div>
-      <div class="editor-content-preview markdown-body" fxFlex="50" [innerHTML]="form?.controls?.content?.value | markdown"></div>
+      <div *ngIf="showPreview" class="editor-content-preview markdown-body" fxFlex="50" [innerHTML]="form?.controls?.content?.value | markdown"></div>
     </div>
-    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end center">
-      <button mat-raised-button>Cancel</button>
-      <button mat-raised-button color="primary" (click)="save()">Save</button>
-      </div>
   </div>
-  
 </form>

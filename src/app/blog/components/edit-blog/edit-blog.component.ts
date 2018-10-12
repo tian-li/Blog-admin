@@ -20,6 +20,7 @@ export class EditBlogComponent implements OnInit {
   form: FormGroup;
   blogId: string;
   editMode: boolean;
+  showPreview: boolean = true;
   initBlogSubscription: Subscription;
   errorMessageSubscription: Subscription;
 
@@ -47,6 +48,15 @@ export class EditBlogComponent implements OnInit {
       });
   }
 
+  
+
+  buildForm(): FormGroup {
+    return this.fb.group({
+      title: [get(this.blog, 'title'), Validators.required],
+      content: [get(this.blog, 'content'), Validators.required],
+    });
+  }
+
   save(): void {
     const formValue = this.form.getRawValue();
     let blog = {
@@ -66,11 +76,13 @@ export class EditBlogComponent implements OnInit {
     });
   }
 
-  buildForm(): FormGroup {
-    return this.fb.group({
-      title: [get(this.blog, 'title'), Validators.required],
-      content: [get(this.blog, 'content'), Validators.required],
-    });
+  back() {
+    this.router.navigate(['/blog']);
+  }
+
+  togglePreview(): void {
+    this.showPreview = !this.showPreview;
+    console.log('show preview', this.showPreview);
   }
 
   ngOnDestroy() {

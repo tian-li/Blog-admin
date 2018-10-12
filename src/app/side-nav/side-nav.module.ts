@@ -12,6 +12,7 @@ import { SideNavComponent } from './side-nav.component';
 import { BlogListComponent } from "./blog-list/blog-list.component";
 import { BlogListItemComponent } from "./blog-list/blog-list-item/blog-list-item.component";
 import { TruncateStringPipe } from './blog-list/truncate-string.pipe';
+import { MaterialModule } from '../shared/material.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { TruncateStringPipe } from './blog-list/truncate-string.pipe';
     FormsModule,
     RouterModule,
     FlexLayoutModule,
-    MatListModule,
+    MaterialModule,
+
     BlogModule,
   ],
   declarations: [
