@@ -82,7 +82,6 @@ export class EditBlogComponent implements OnInit {
 
   togglePreview(): void {
     this.showPreview = !this.showPreview;
-    console.log('show preview', this.showPreview);
   }
 
   ngOnDestroy() {

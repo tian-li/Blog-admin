@@ -59,7 +59,6 @@ export class BlogEffects {
       return this.blogService.addBlog(blog)
       .pipe(
         map((data)=> {
-          console.log('returned data after add', data);
           return new AddBlogSuccess(data);
         }),
         catchError((err: any) => of(new AddBlogFail(err))),
