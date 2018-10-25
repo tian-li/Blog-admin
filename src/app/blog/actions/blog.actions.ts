@@ -75,9 +75,7 @@ export class AddBlogFail implements Action {
 export class EditBlog implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG;
   
-  constructor(public payload: {id: string, blog: any}) {
-    console.log('edit action', payload)
-  }
+  constructor(public payload: {id: string, blog: any}) { }
 }
 
 export class EditBlogSuccess implements Action {
