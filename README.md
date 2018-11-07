@@ -7,7 +7,7 @@ Admin part of [blog redesign project](https://github.com/tian-li/Blog-Redesign)
 - [x] Preview while editing
 - [x] Toggle preview
 - [ ] Scroll sync between editor and preview
-- [ ] Tag system
+- [x] Tag system
 - [ ] Save to draft
 - [ ] Delete Blog
 - [ ] Manage comments
