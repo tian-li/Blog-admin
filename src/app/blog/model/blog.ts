@@ -16,6 +16,10 @@ export class Blog {
     this.summary = blog.summary;
     this.createdDate = dayjs(blog.createdDate).format('MMM DD, YYYY');
     this.lastModified = dayjs(blog.lastModified).format('MMM DD, YYYY');
-    this.tags = blog.tags;
+    if (!!blog.tags) {
+      this.tags = blog.tags;
+    } else {
+      this.tags = [];
+    }
   }
 }

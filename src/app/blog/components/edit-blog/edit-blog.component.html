@@ -1,7 +1,16 @@
 <form class="blog-editor" [formGroup]="form" autocomplete="off">
   <div fxLayout="column">
-    <div class="editor-title" fxFlex>
-      <input matInput type="text" placeholder="Title" formControlName="title">
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div class="editor-title" fxFlex="66">
+        <input type="text" placeholder="Title" formControlName="title">
+      </div>
+      <div class="editor-tag" fxFlex="33" (click)="focusTagInput()">
+        <span class="tag-item" *ngFor="let tag of tags">
+          {{tag}}
+          <span class="remove-tag" (click)="removeTag(tag)">×</span>
+        </span>
+        <input #tagInput type="text" class="input-tag" (keyup)="onKeyUp($event)" formControlName="tag">
+      </div>
     </div>
 
     <div class="editor-controls" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
@@ -20,7 +29,7 @@
 
     <div class="editor-content" fxLayout="row" fxLayoutGap="20px">
       <div class="editor-content-text" fxFlex="showPreview?50:100">
-        <textarea matInput placeholder="Content" cols="90" rows="40" spellcheck="false" formControlName="content"></textarea>
+        <textarea placeholder="Content" cols="90" rows="40" spellcheck="false" formControlName="content"></textarea>
       </div>
       <div *ngIf="showPreview" class="editor-content-preview markdown-body" fxFlex="50" [innerHTML]="form?.controls?.content?.value | markdown"></div>
     </div>

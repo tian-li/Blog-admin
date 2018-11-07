@@ -3,13 +3,53 @@
   margin: 15px 100px;
 
   .editor-title {
+    background: white;
+    border-radius: 5px;
+    border: 1px #cccccc solid;
     & input {
+      margin: 0;
       font-size: 16px;
-      padding: 10px 20px;
+      padding: 10px 10px;
       display: block;
       width: 100%;
+      border: none;
       border-radius: 5px;
-      border: 1px #cccccc solid;
+    }
+  }
+
+  .editor-tag {
+    cursor: text;
+    font-size: 16px;
+    padding: 10px 0px 10px 10px;
+    width: 100%;
+    border-radius: 5px;
+    background: white;
+    border: 1px #cccccc solid;
+
+    & .tag-item {
+      line-height: 20px;
+      border-radius: 14px;
+      height: 20px;
+      font-size: 14px;
+      display: inline-block;
+      background: greenyellow;
+      padding-left: 5px;
+
+      .remove-tag {
+        padding-right: 5px;
+        cursor: pointer;
+      }
+    }
+
+    & .tag-item:not(:first-child) {
+      margin-left: 5px;
+    }
+
+    & input {
+      margin: 0;
+      padding-left: 5px;
+      border: none;
+      border-radius: 5px;
     }
   }
 
@@ -26,14 +66,15 @@
         color: red;
       }
       &.save:hover {
-        color: red;
+        color: green;
       }
       &.preview {
-
         vertical-align: -5px;
       }
+      &.preview:hover {
+        color: blue;
+      }
     }
-    
   }
 
   .editor-content {
@@ -60,7 +101,6 @@
       overflow: auto;
     }
   }
-
 
   .mat-card-actions {
     margin: 0px;
