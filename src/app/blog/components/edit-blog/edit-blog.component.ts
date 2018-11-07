@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { switchMap } from 'rxjs/operators';
-import { get, pull } from 'lodash';
+import { find, get, pull } from 'lodash';
 
 import { Blog } from '../../model/blog';
 import * as fromBlog from '../../reducer';
@@ -61,12 +61,12 @@ export class EditBlogComponent implements OnInit {
   }
 
   onKeyUp(event: KeyboardEvent): void {
-    if (event.code === 'Backspace') {
+    const inputValue: string = this.form.controls.tag.value;
+    if (event.code === 'Backspace' && !inputValue) {
       this.removeTag();
       return;
     } else {
-      const inputValue: string = this.form.controls.tag.value;
-      if ((event.code === 'Comma' || event.code === 'Space') && !!inputValue) {
+      if (event.code === 'Comma' || event.code === 'Space') {
         this.addTag(inputValue);
         this.form.controls.tag.setValue('');
       }
@@ -77,7 +77,7 @@ export class EditBlogComponent implements OnInit {
     if (tag[tag.length - 1] === ',' || tag[tag.length - 1] === ' ') {
       tag = tag.slice(0, -1);
     }
-    if (tag.length > 0) {
+    if (tag.length > 0 && !find(this.tags, tag)) {
       this.tags.push(tag);
     }
   }
