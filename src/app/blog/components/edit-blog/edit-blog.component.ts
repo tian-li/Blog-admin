@@ -98,9 +98,10 @@ export class EditBlogComponent implements OnInit {
     });
   }
 
-  save(): void {
+  save(isDraft: boolean): void {
     const formValue = this.form.getRawValue();
     let blog = {
+      isDraft,
       title: formValue.title,
       content: formValue.content,
       lastModified: new Date().valueOf(),

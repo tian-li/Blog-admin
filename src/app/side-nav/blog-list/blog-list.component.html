@@ -1,7 +1,8 @@
-<a routerLink="./blog/new">New Blog</a>
+<button class="button-new-blog" routerLink="./blog/new">New Blog</button>
 <ul class="blog-list">
   <li class="blog-list-item" *ngFor="let blog of blogs$ | async; let first = first; let last = last; let i=index;">
     <a [routerLink]="['./blog', blog.id, 'edit']" routerLinkActive="active">
+      <mat-icon *ngIf="blog.isDraft" class="draft">drafts</mat-icon>
       {{blog.title}}
     </a>
   </li>

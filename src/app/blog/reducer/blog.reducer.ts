@@ -28,7 +28,8 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
     case BlogActionTypes.LOAD_ALL_BLOGS:
     case BlogActionTypes.LOAD_ONE_BLOG:
     case BlogActionTypes.ADD_BLOG:
-    case BlogActionTypes.EDIT_BLOG: {
+    case BlogActionTypes.EDIT_BLOG:
+    case BlogActionTypes.SAVE_BLOG_DRAFT: {
       return {
         ...state,
         selectedBlogId: undefined,
@@ -38,7 +39,8 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
     case BlogActionTypes.LOAD_ALL_BLOGS_FAIL:
     case BlogActionTypes.LOAD_ONE_BLOG_FAIL:
     case BlogActionTypes.ADD_BLOG_FAIL:
-    case BlogActionTypes.EDIT_BLOG_FAIL: {
+    case BlogActionTypes.EDIT_BLOG_FAIL:
+    case BlogActionTypes.SAVE_BLOG_DRAFT_FAIL: {
       return {
         ...state,
         errorMessage: action.payload,
@@ -65,6 +67,9 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
         ...state,
         errorMessage: 'Success',
       });
+    }
+    case BlogActionTypes.SAVE_BLOG_DRAFT_SUCCESS: {
+      
     }
     default: {
       return state;

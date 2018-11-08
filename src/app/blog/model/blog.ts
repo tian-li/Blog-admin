@@ -8,6 +8,7 @@ export class Blog {
   summary: string;
   tags: string[];
   lastModified: string;
+  isDraft: boolean;
 
   constructor(blog: any) {
     this.id = blog.id;
@@ -21,5 +22,6 @@ export class Blog {
     } else {
       this.tags = [];
     }
+    this.isDraft = blog.isDraft === true ? true : false;
   }
 }
