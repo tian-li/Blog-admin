@@ -18,10 +18,6 @@ export enum BlogActionTypes {
   EDIT_BLOG = '[Blog] Edit Blog',
   EDIT_BLOG_SUCCESS = '[Blog] Edit Blog Success',
   EDIT_BLOG_FAIL = '[Blog] Edit Blog Fail',
-
-  SAVE_BLOG_DRAFT = '[Blog] Save Blog Draft',
-  SAVE_BLOG_DRAFT_SUCCESS = '[Blog] Save Blog Draft Success',
-  SAVE_BLOG_DRAFT_FAIL = '[Blog] Save Blog Draft Fail',
 }
 
 export class LoadAllBlogs implements Action {
@@ -60,7 +56,7 @@ export class LoadOneBlogFail implements Action {
 
 export class AddBlog implements Action {
   readonly type = BlogActionTypes.ADD_BLOG;
-  
+
   constructor(public payload: any) {}
 }
 
@@ -78,7 +74,7 @@ export class AddBlogFail implements Action {
 
 export class EditBlog implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG;
-  
+
   constructor(public payload: {id: string, blog: any}) { }
 }
 
@@ -95,25 +91,6 @@ export class EditBlogFail implements Action {
   constructor(public payload: string) { }
 }
 
-export class SaveBlogDraft implements Action {
-  readonly type = BlogActionTypes.SAVE_BLOG_DRAFT;
-  
-  constructor(public payload: {id: string, blog: any}) { }
-}
-
-export class SaveBlogDraftSuccess implements Action {
-  readonly type = BlogActionTypes.SAVE_BLOG_DRAFT_SUCCESS;
-
-  constructor(public id: string,
-    public changes: Partial<Blog>) {}
-}
-
-export class SaveBlogDraftFail implements Action {
-  readonly type = BlogActionTypes.SAVE_BLOG_DRAFT_FAIL;
-
-  constructor(public payload: string) { }
-}
-
 export type BlogActionsUnion =
   | LoadAllBlogs
   | LoadAllBlogsSuccess
@@ -126,7 +103,4 @@ export type BlogActionsUnion =
   | AddBlogFail
   | EditBlog
   | EditBlogSuccess
-  | EditBlogFail
-  | SaveBlogDraft
-  | SaveBlogDraftSuccess
-  | SaveBlogDraftFail;
+  | EditBlogFail;

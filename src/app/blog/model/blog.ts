@@ -15,13 +15,21 @@ export class Blog {
     this.title = blog.title;
     this.content = blog.content;
     this.summary = blog.summary;
-    this.createdDate = dayjs(blog.createdDate).format('MMM DD, YYYY');
-    this.lastModified = dayjs(blog.lastModified).format('MMM DD, YYYY');
+    this.createdDate = blog.createdDate;
+    this.lastModified = blog.lastModified;
     if (!!blog.tags) {
       this.tags = blog.tags;
     } else {
       this.tags = [];
     }
     this.isDraft = blog.isDraft === true ? true : false;
+  }
+
+  get createdDateDisplay(): string {
+    return dayjs(this.createdDate).format('MMM DD, YYYY');
+  }
+
+  get lastModifiedDisplay(): string {
+    return dayjs(this.lastModified).format('MMM DD, YYYY');
   }
 }

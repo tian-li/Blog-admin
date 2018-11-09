@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
-import { filter } from 'rxjs/operators/filter';
+import { filter, orderBy } from 'lodash';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 import { Blog } from '../../blog/model/blog';
 import * as fromBlog from '../../blog/reducer';
@@ -13,26 +14,34 @@ import * as BlogActions from '../../blog/actions/blog.actions';
   templateUrl: './blog-list.component.html',
   styleUrls: ['blog-list.component.scss'],
 })
-export class BlogListComponent implements OnInit {
-  blogs$: Observable<Blog[]>;
-  blogCount: number;
-  blogsPerPage = 5;
-  currentPage: number;
-  blogs: Blog[];
+export class BlogListComponent implements OnInit, OnDestroy {
+  destroy$: Subject<void> = new Subject<void>();
+  allBlogs: Blog[];
+  filteredBlogs: Blog[];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private store: Store<fromBlog.State>,
-  ) {
-    this.blogs$ = this.store.pipe(select(fromBlog.getAllBlogs));
-    this.store.pipe(select(fromBlog.getAllBlogCount)).subscribe((blogCount: number) => this.blogCount = blogCount);
-    this.store.pipe(select(fromBlog.getAllBlogs)).subscribe((blogs) => {
-      this.blogs = blogs;
-    })
-  }
+  constructor(private store: Store<fromBlog.State>) {}
 
   ngOnInit(): void {
     this.store.dispatch(new BlogActions.LoadAllBlogs());
+    this.store
+      .pipe(
+        select(fromBlog.getAllBlogs),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((blogs: Blog[]) => {
+        this.allBlogs = orderBy(blogs, 'lastModified', 'desc');
+        this.filteredBlogs = this.allBlogs;
+      });
+  }
+
+  onCheckBoxChange(event: MatCheckboxChange) {
+    this.filteredBlogs = event.checked
+      ? filter(this.allBlogs, (blog: Blog) => blog.isDraft)
+      : this.allBlogs;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
