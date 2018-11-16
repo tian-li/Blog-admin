@@ -8,6 +8,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const modules = [
   MatButtonModule,
@@ -18,10 +21,13 @@ const modules = [
   MatIconModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatListModule,
+  MatTooltipModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({
   imports: [modules],
   exports: [modules],
 })
-export class MaterialModule { }
+export class MaterialModule {}

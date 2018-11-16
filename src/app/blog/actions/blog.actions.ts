@@ -56,7 +56,7 @@ export class LoadOneBlogFail implements Action {
 
 export class AddBlog implements Action {
   readonly type = BlogActionTypes.ADD_BLOG;
-  
+
   constructor(public payload: any) {}
 }
 
@@ -74,7 +74,7 @@ export class AddBlogFail implements Action {
 
 export class EditBlog implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG;
-  
+
   constructor(public payload: {id: string, blog: any}) { }
 }
 

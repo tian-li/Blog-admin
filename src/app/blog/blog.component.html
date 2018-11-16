@@ -1,4 +1,10 @@
-<div *ngIf="!id">
-  Please select a blog to edit or create a new one
+<div *ngIf="!id" class="message">
+  <div>
+    <h1>
+      Please select a blog to edit or 
+    </h1>
+    <button mat-raised-button color="primary" class="a-new-blog" routerLink="./new">create a new one</button>
+  </div>
 </div>
+<button mat-raised-button>asd</button>
 <router-outlet></router-outlet>
