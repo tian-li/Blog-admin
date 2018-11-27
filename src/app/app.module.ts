@@ -10,7 +10,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BlogModule } from './blog/blog.module';
-
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
