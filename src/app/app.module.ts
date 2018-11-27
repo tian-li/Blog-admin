@@ -1,6 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,9 +10,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BlogModule } from './blog/blog.module';
-import { SideNavModule } from './side-nav/side-nav.module';
 
-import { MaterialModule } from './shared/material.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
@@ -21,14 +19,12 @@ import { MaterialModule } from './shared/material.module';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    FlexLayoutModule,
-    MaterialModule,
+    SharedModule.forRoot(),
     StoreModule.forRoot(() => { }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(),
-    BlogModule,
-    SideNavModule,
     AppRoutingModule,
+    BlogModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

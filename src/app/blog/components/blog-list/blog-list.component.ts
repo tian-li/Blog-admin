@@ -4,9 +4,9 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { filter } from 'rxjs/operators/filter';
 
-import { Blog } from '../../blog/model/blog';
-import * as fromBlog from '../../blog/reducer';
-import * as BlogActions from '../../blog/actions/blog.actions';
+import { Blog } from '../../model/blog';
+import * as fromBlog from '../../reducer';
+import * as BlogActions from '../../actions/blog.actions';
 
 @Component({
   selector: 'app-blog-list',

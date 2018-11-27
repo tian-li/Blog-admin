@@ -25,6 +25,9 @@
           <mat-icon class="preview">{{showPreview ? 'visibility' : 'visibility_off'}}</mat-icon>
         </mat-slide-toggle>
       </div>
+      <div>
+        <mat-icon class="delete" (click)="delete()">delete</mat-icon>
+      </div>
     </div>
 
     <div class="editor-content" fxLayout="row" fxLayoutGap="20px">

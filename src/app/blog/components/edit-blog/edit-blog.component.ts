@@ -5,10 +5,12 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { switchMap } from 'rxjs/operators';
 import { find, get, pull } from 'lodash';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Blog } from '../../model/blog';
 import * as fromBlog from '../../reducer';
 import * as BlogActions from '../../actions/blog.actions';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-edit-blog',
@@ -32,7 +34,8 @@ export class EditBlogComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<fromBlog.State>
+    private store: Store<fromBlog.State>,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -109,13 +112,11 @@ export class EditBlogComponent implements OnInit {
     if (this.editMode) {
       this.store.dispatch(new BlogActions.EditBlog({ id: this.blogId, blog }));
     } else {
-      this.store.dispatch(
-        new BlogActions.AddBlog({ ...blog, createdDate: new Date().valueOf() })
-      );
+      this.store.dispatch(new BlogActions.AddBlog({ ...blog, createdDate: new Date().valueOf() }));
     }
     this.errorMessageSubscription = this.store
       .pipe(select(fromBlog.getErrorMessage))
-      .subscribe(errorMessage => {
+      .subscribe((errorMessage) => {
         if (errorMessage === 'Success') {
           this.router.navigate(['/blog']);
         }
@@ -129,6 +130,29 @@ export class EditBlogComponent implements OnInit {
   togglePreview(): void {
     this.showPreview = !this.showPreview;
   }
+
+  delete(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px',
+      data: {
+        title: '警告',
+        message: '确认删除这篇文章吗？',
+        confirm: {
+          text: '删除',
+          color: 'warn',
+        },
+        cancel: {
+          text: '取消',
+          color: 'primary',
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      
+    });
+  }
+
 
   ngOnDestroy(): void {
     if (this.initBlogSubscription) {
