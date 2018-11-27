@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { from } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operators/map';
-import { switchMap } from 'rxjs/operators/switchMap';
-import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { from, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { map as _map} from 'lodash';
 
 import { Blog } from '../model/blog';
 import { FirebaseService } from '../../shared/firebase.service';
@@ -16,7 +14,10 @@ export class BlogService {
 
   constructor(private firebaseService: FirebaseService) {
     this.blogsCollection = firebaseService.blogsCollectionRef;
-    this.orderedBlogsCollection = firebaseService.blogsCollectionRef.orderBy('createdDate', 'desc');
+    this.orderedBlogsCollection = firebaseService.blogsCollectionRef.orderBy(
+      'createdDate',
+      'desc'
+    );
   }
 
   loadAllBlogsInfo(): Observable<any> {
@@ -24,18 +25,31 @@ export class BlogService {
       map((querySnapshot: any) => {
         return {
           allBlogCount: querySnapshot.size,
-          allBlogCreateTimes: _.map(querySnapshot.docs, (doc: any) => doc.data().createdDate),
+          allBlogCreateTimes: _map(
+            querySnapshot.docs,
+            (doc: any) => doc.data().createdDate
+          ),
         };
-      }));
+      })
+    );
   }
 
   loadOneBlog(blogId: string): Observable<Blog> {
-    return from(this.blogsCollection.doc(blogId).get())
-      .pipe(map((documentSnapshot: any) => new Blog({ id: documentSnapshot.id, ...documentSnapshot.data() })));
+    return from(this.blogsCollection.doc(blogId).get()).pipe(
+      map(
+        (documentSnapshot: any) =>
+          new Blog({ id: documentSnapshot.id, ...documentSnapshot.data() })
+      )
+    );
   }
 
   loadAtPage(startAtId: string, numberPerPage: number): Observable<Blog[]> {
-    return this.createObservable(this.orderedBlogsCollection.startAt(startAtId).limit(numberPerPage).get());
+    return this.createObservable(
+      this.orderedBlogsCollection
+        .startAt(startAtId)
+        .limit(numberPerPage)
+        .get()
+    );
   }
 
   loadAllBlogs(): Observable<Blog[]> {
@@ -43,23 +57,34 @@ export class BlogService {
   }
 
   addBlog(blog: any): Observable<Blog> {
-    return from(this.blogsCollection.add(blog))
-      .pipe(switchMap((documentReference: any) => {
-        return from(documentReference.get()).pipe(map((documentSnapshot: any) => new Blog({ id: documentSnapshot.id, ...documentSnapshot.data() })));
-      }));
+    return from(this.blogsCollection.add(blog)).pipe(
+      switchMap((documentReference: any) => {
+        return from(documentReference.get()).pipe(
+          map(
+            (documentSnapshot: any) =>
+              new Blog({ id: documentSnapshot.id, ...documentSnapshot.data() })
+          )
+        );
+      })
+    );
   }
 
   editBlog(id: string, blog: any): Observable<Blog> {
-    return from(this.blogsCollection.doc(id).update(blog))
-      .pipe(
-        switchMap((data: any) => {
-          return of(new Blog({ id, ...blog }));
-        }),
-      );
+    return from(this.blogsCollection.doc(id).update(blog)).pipe(
+      switchMap((data: any) => {
+        return of(new Blog({ id, ...blog }));
+      })
+    );
   }
 
   createObservable(promise: any): Observable<Blog[]> {
     return from(promise).pipe(
-      map((querySnapshot: any) => _.map(querySnapshot.docs, doc => new Blog({ id: doc.id, ...doc.data() }))));
+      map((querySnapshot: any) =>
+        _map(
+          querySnapshot.docs,
+          doc => new Blog({ id: doc.id, ...doc.data() })
+        )
+      )
+    );
   }
 }

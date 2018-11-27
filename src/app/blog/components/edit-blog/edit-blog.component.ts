@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 import { find, get, pull } from 'lodash';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -17,7 +19,8 @@ import { ConfirmationDialogComponent } from '../../../shared/components/confirma
   templateUrl: './edit-blog.component.html',
   styleUrls: ['./edit-blog.component.scss'],
 })
-export class EditBlogComponent implements OnInit {
+export class EditBlogComponent implements OnInit, OnDestroy {
+  destroy$: Subject<void> = new Subject<void>();
   @ViewChild('tagInput')
   tagInputRef: ElementRef;
 
@@ -25,9 +28,7 @@ export class EditBlogComponent implements OnInit {
   form: FormGroup;
   blogId: string;
   editMode: boolean;
-  showPreview: boolean = true;
-  initBlogSubscription: Subscription;
-  errorMessageSubscription: Subscription;
+  showPreview = true;
   tags: string[] = [];
 
   constructor(
@@ -39,7 +40,7 @@ export class EditBlogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initBlogSubscription = this.route.paramMap
+    this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) => {
           this.blogId = params.get('id');
@@ -48,9 +49,10 @@ export class EditBlogComponent implements OnInit {
             this.store.dispatch(new BlogActions.LoadOneBlog(params.get('id')));
             return this.store.pipe(select(fromBlog.getSelectedBlog));
           } else {
-            return Observable.of(undefined);
+            return observableOf(undefined);
           }
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe((blog: Blog) => {
         this.blog = blog;
@@ -101,9 +103,10 @@ export class EditBlogComponent implements OnInit {
     });
   }
 
-  save(): void {
+  save(isDraft: boolean): void {
     const formValue = this.form.getRawValue();
-    let blog = {
+    const blog = {
+      isDraft,
       title: formValue.title,
       content: formValue.content,
       lastModified: new Date().valueOf(),
@@ -114,8 +117,11 @@ export class EditBlogComponent implements OnInit {
     } else {
       this.store.dispatch(new BlogActions.AddBlog({ ...blog, createdDate: new Date().valueOf() }));
     }
-    this.errorMessageSubscription = this.store
-      .pipe(select(fromBlog.getErrorMessage))
+    this.store
+      .pipe(
+        select(fromBlog.getErrorMessage),
+        takeUntil(this.destroy$)
+      )
       .subscribe((errorMessage) => {
         if (errorMessage === 'Success') {
           this.router.navigate(['/blog']);
@@ -155,11 +161,7 @@ export class EditBlogComponent implements OnInit {
 
 
   ngOnDestroy(): void {
-    if (this.initBlogSubscription) {
-      this.initBlogSubscription.unsubscribe();
-    }
-    if (this.errorMessageSubscription) {
-      this.errorMessageSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

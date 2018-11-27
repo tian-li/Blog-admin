@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { map as _map } from 'lodash';
 
 import { Blog } from '../model/blog';
@@ -58,11 +58,11 @@ export class BlogEffects {
     switchMap((blog: any) => {
       return this.blogService.addBlog(blog)
       .pipe(
-        map((data)=> {
+        map((data) => {
           return new AddBlogSuccess(data);
         }),
         catchError((err: any) => of(new AddBlogFail(err))),
-      )
+      );
     })
   );
 
@@ -73,11 +73,11 @@ export class BlogEffects {
     switchMap((payload: {id: string, blog: any}) => {
       return this.blogService.editBlog(payload.id, payload.blog)
       .pipe(
-        map((blog: Blog)=> {
+        map((blog: Blog) => {
           return new EditBlogSuccess(blog.id, blog);
         }),
         catchError((err: any) => of(new EditBlogFail(err))),
-      )
+      );
     })
   );
 

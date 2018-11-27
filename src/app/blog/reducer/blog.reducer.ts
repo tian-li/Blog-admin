@@ -33,7 +33,7 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
         ...state,
         selectedBlogId: undefined,
         errorMessage: undefined,
-      }
+      };
     }
     case BlogActionTypes.LOAD_ALL_BLOGS_FAIL:
     case BlogActionTypes.LOAD_ONE_BLOG_FAIL:
@@ -42,7 +42,7 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
       return {
         ...state,
         errorMessage: action.payload,
-      }
+      };
     }
     case BlogActionTypes.LOAD_ALL_BLOGS_SUCCESS: {
       return adapter.addAll(action.payload, { ...state, errorMessage: 'Success' });

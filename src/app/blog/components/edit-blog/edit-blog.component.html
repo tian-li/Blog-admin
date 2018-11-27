@@ -18,7 +18,10 @@
         <mat-icon class="cancel" (click)="back()">keyboard_backspace</mat-icon>
       </div>
       <div>
-        <mat-icon class="save" (click)="save()">save</mat-icon>
+        <mat-icon class="save" (click)="save(false)">save</mat-icon>
+      </div>
+      <div>
+        <mat-icon class="save-draft" (click)="save(true)">drafts</mat-icon>
       </div>
       <div>
         <mat-slide-toggle [labelPosition]="'before'" (change)="togglePreview()" [checked]="showPreview">

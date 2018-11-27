@@ -1,0 +1,14 @@
+:host {
+  div.message {
+    display: flex;
+    height: 100%;
+    & > div {
+      margin: auto;
+      text-align: center;
+
+      .a-new-blog {
+        margin-top: 20px;
+      }
+    }
+  }
+}

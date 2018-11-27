@@ -8,6 +8,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 
 const modules = [
@@ -19,6 +22,9 @@ const modules = [
   MatIconModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatListModule,
+  MatTooltipModule,
+  MatCheckboxModule,
   MatDialogModule,
 ];
 
@@ -26,4 +32,4 @@ const modules = [
   imports: [modules],
   exports: [modules],
 })
-export class MaterialModule { }
+export class MaterialModule {}
