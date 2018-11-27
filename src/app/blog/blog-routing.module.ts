@@ -9,6 +9,7 @@ const blogRoutes = [
   { path: 'blog/new', component: EditBlogComponent },
   { path: 'blog/:id/edit', component: EditBlogComponent },
   { path: 'blog/:id', redirectTo: 'blog/:id/edit', pathMatch: 'full' },
+  { path: '**', redirectTo: 'blog' },
 ];
 
 @NgModule({
