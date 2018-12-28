@@ -1,24 +1,33 @@
 <div fxLayout="column" fxLayoutGap="20px">
-  <div class="blog-actions" fxLayout="row" fxLayoutAlign="center center">
+  <div class="blog-actions" fxLayout="column" fxLayoutAlign="center center">
     <div fxFlex><button mat-stroked-button routerLink="./blog/new">New Blog</button></div>
-    <div fxFlex>
-      <mat-checkbox (change)="onCheckBoxChange($event)" class="checkbox-draft unselectable">Drafts Only</mat-checkbox>
+    <div fxLayout="row">
+        <div fxFlex>
+            <mat-checkbox (change)="onCheckBoxChange($event)" class="checkbox-draft unselectable">Drafts Only</mat-checkbox>
+          </div>
+          <div fxFlex >
+              <mat-checkbox (change)="toggleTrash($event)" class="checkbox-draft unselectable">Trash Only</mat-checkbox>
+        
+          </div>
     </div>
   </div>
   <div fxFlex>
     <mat-action-list class="blog-list">
-      <button
+      <ng-template let-blog ngFor [ngForOf]="filteredBlogs">
+        <button
         mat-list-item
         class="blog-list-item"
-        *ngFor="let blog of filteredBlogs"
         matTooltip="{{blog.title}}"
         [ngClass]="{ draft: blog.isDraft }"
         [routerLink]="['./blog', blog.id, 'edit']"
         routerLinkActive="active"
       >
-        <mat-icon *ngIf="blog.isDraft">drafts</mat-icon>
-        <span>{{ blog.title }}</span>
-      </button>
+          <mat-icon *ngIf="blog.isDraft">drafts</mat-icon>
+          <mat-icon *ngIf="blog.deleted">delete</mat-icon>
+          <span>{{ blog.title }}</span>
+        </button>
+      </ng-template>
     </mat-action-list>
   </div>
+  
 </div>

@@ -15,13 +15,19 @@
 
     <div class="editor-controls" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
       <div>
-        <mat-icon class="cancel" (click)="back()">keyboard_backspace</mat-icon>
+        <button mat-icon-button class="cancel" (click)="back()">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
       </div>
       <div>
-        <mat-icon class="save" (click)="save(false)">save</mat-icon>
+        <button mat-icon-button class="save" (click)="save(false)">
+          <mat-icon >save</mat-icon>
+        </button>
       </div>
       <div>
-        <mat-icon class="save-draft" (click)="save(true)">drafts</mat-icon>
+        <button mat-icon-button class="save-draft" (click)="save(true)">
+          <mat-icon>drafts</mat-icon>
+        </button>
       </div>
       <div>
         <mat-slide-toggle [labelPosition]="'before'" (change)="togglePreview()" [checked]="showPreview">
@@ -29,7 +35,9 @@
         </mat-slide-toggle>
       </div>
       <div>
-        <mat-icon class="delete" (click)="delete()">delete</mat-icon>
+        <button mat-icon-button class="delete" (click)="delete()" [disabled]="!blogId">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
     </div>
 

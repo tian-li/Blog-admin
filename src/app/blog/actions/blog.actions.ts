@@ -18,6 +18,10 @@ export enum BlogActionTypes {
   EDIT_BLOG = '[Blog] Edit Blog',
   EDIT_BLOG_SUCCESS = '[Blog] Edit Blog Success',
   EDIT_BLOG_FAIL = '[Blog] Edit Blog Fail',
+
+  DELETE_BLOG = '[Blog] Delete Blog',
+  DELETE_BLOG_SUCCESS = '[Blog] Delete Blog Success',
+  DELETE_BLOG_FAIL = '[Blog] Delete Blog Fail',
 }
 
 export class LoadAllBlogs implements Action {
@@ -27,31 +31,31 @@ export class LoadAllBlogs implements Action {
 export class LoadAllBlogsSuccess implements Action {
   readonly type = BlogActionTypes.LOAD_ALL_BLOGS_SUCCESS;
 
-  constructor(public payload: Blog[]) { }
+  constructor(public payload: Blog[]) {}
 }
 
 export class LoadAllBlogsFail implements Action {
   readonly type = BlogActionTypes.LOAD_ALL_BLOGS_FAIL;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class LoadOneBlog implements Action {
   readonly type = BlogActionTypes.LOAD_ONE_BLOG;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class LoadOneBlogSuccess implements Action {
   readonly type = BlogActionTypes.LOAD_ONE_BLOG_SUCCESS;
 
-  constructor(public payload: Blog) { }
+  constructor(public payload: Blog) {}
 }
 
 export class LoadOneBlogFail implements Action {
   readonly type = BlogActionTypes.LOAD_ONE_BLOG_FAIL;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class AddBlog implements Action {
@@ -69,26 +73,43 @@ export class AddBlogSuccess implements Action {
 export class AddBlogFail implements Action {
   readonly type = BlogActionTypes.ADD_BLOG_FAIL;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class EditBlog implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG;
 
-  constructor(public payload: {id: string, blog: any}) { }
+  constructor(public payload: { id: string, blog: any }) {}
 }
 
 export class EditBlogSuccess implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG_SUCCESS;
 
-  constructor(public id: string,
-    public changes: Partial<Blog>) {}
+  constructor(public id: string, public changes: Partial<Blog>) {}
 }
 
 export class EditBlogFail implements Action {
   readonly type = BlogActionTypes.EDIT_BLOG_FAIL;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
+}
+
+export class DeleteBlog implements Action {
+  readonly type = BlogActionTypes.DELETE_BLOG;
+
+  constructor(public payload: { blog: Blog }) {}
+}
+
+export class DeleteBlogSuccess implements Action {
+  readonly type = BlogActionTypes.DELETE_BLOG_SUCCESS;
+
+  constructor(public id: string, public changes: Partial<Blog>) {}
+}
+
+export class DeleteBlogFail implements Action {
+  readonly type = BlogActionTypes.DELETE_BLOG_FAIL;
+
+  constructor(public payload: string) {}
 }
 
 export type BlogActionsUnion =
@@ -103,4 +124,7 @@ export type BlogActionsUnion =
   | AddBlogFail
   | EditBlog
   | EditBlogSuccess
-  | EditBlogFail;
+  | EditBlogFail
+  | DeleteBlog
+  | DeleteBlogSuccess
+  | DeleteBlogFail;

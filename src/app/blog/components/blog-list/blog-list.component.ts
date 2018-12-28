@@ -18,6 +18,7 @@ export class BlogListComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject<void>();
   allBlogs: Blog[];
   filteredBlogs: Blog[];
+  viewTrash: boolean;
 
   constructor(private store: Store<fromBlog.State>) {}
 
@@ -37,6 +38,12 @@ export class BlogListComponent implements OnInit, OnDestroy {
   onCheckBoxChange(event: MatCheckboxChange) {
     this.filteredBlogs = event.checked
       ? filter(this.allBlogs, (blog: Blog) => blog.isDraft)
+      : this.allBlogs;
+  }
+
+  toggleTrash(event: MatCheckboxChange) {
+    this.filteredBlogs = event.checked
+      ? filter(this.allBlogs, (blog: Blog) => blog.deleted)
       : this.allBlogs;
   }
 

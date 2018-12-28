@@ -5,8 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
-import { find, get, pull } from 'lodash';
+import { takeUntil, skip } from 'rxjs/operators';
+import { find, get, pull, isEmpty, every } from 'lodash';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Blog } from '../../model/blog';
@@ -40,6 +40,7 @@ export class EditBlogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.handleError();
     this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) => {
@@ -105,6 +106,9 @@ export class EditBlogComponent implements OnInit, OnDestroy {
 
   save(isDraft: boolean): void {
     const formValue = this.form.getRawValue();
+    if (every(formValue, isEmpty)) {
+      return;
+    }
     const blog = {
       isDraft,
       title: formValue.title,
@@ -117,16 +121,6 @@ export class EditBlogComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(new BlogActions.AddBlog({ ...blog, createdDate: new Date().valueOf() }));
     }
-    this.store
-      .pipe(
-        select(fromBlog.getErrorMessage),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((errorMessage) => {
-        if (errorMessage === 'Success') {
-          this.router.navigate(['/blog']);
-        }
-      });
   }
 
   back(): void {
@@ -155,10 +149,25 @@ export class EditBlogComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      
+      if (!!this.blogId && confirmed) {
+        this.store.dispatch(new BlogActions.DeleteBlog({ blog: this.blog }));
+      }
     });
   }
 
+  handleError(): void {
+    this.store
+    .pipe(
+      select(fromBlog.getErrorMessage),
+      skip(1),
+      takeUntil(this.destroy$)
+    )
+    .subscribe((errorMessage) => {
+      if (errorMessage === 'Success') {
+        this.router.navigate(['/blog']);
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
