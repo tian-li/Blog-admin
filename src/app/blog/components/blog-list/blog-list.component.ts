@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { select, Store } from '@ngrx/store';
-import { filter, orderBy } from 'lodash';
+import { filter, forEach, get } from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,7 +18,16 @@ export class BlogListComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject<void>();
   allBlogs: Blog[];
   filteredBlogs: Blog[];
-  viewTrash: boolean;
+  filters: { [filterName: string]: { key: string; value: any } } = {
+    showDraft: {
+      key: 'isDraft',
+      value: false,
+    },
+    showDeleted: {
+      key: 'deleted',
+      value: false,
+    },
+  };
 
   constructor(private store: Store<fromBlog.State>) {}
 
@@ -30,21 +39,30 @@ export class BlogListComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((blogs: Blog[]) => {
-        this.allBlogs = orderBy(blogs, 'lastModified', 'desc');
-        this.filteredBlogs = this.allBlogs;
+        this.allBlogs = blogs;
+        this.filterBlogs();
       });
   }
 
-  onCheckBoxChange(event: MatCheckboxChange) {
-    this.filteredBlogs = event.checked
-      ? filter(this.allBlogs, (blog: Blog) => blog.isDraft)
-      : this.allBlogs;
+  toggleDraft(event: MatCheckboxChange): void {
+    this.filters.showDraft.value = event.checked;
+    this.filterBlogs();
   }
 
-  toggleTrash(event: MatCheckboxChange) {
-    this.filteredBlogs = event.checked
-      ? filter(this.allBlogs, (blog: Blog) => blog.deleted)
-      : this.allBlogs;
+  toggleTrash(event: MatCheckboxChange): void {
+    this.filters.showDeleted.value = event.checked;
+    this.filterBlogs();
+  }
+
+  filterBlogs(): void {
+    let filterApplied: Blog[] = [...this.allBlogs];
+    forEach(this.filters, (predicate: { key: string; value: any }) => {
+      filterApplied = filter(
+        filterApplied,
+        (blog: Blog) => get(blog, predicate.key) === predicate.value
+      );
+    });
+    this.filteredBlogs = filterApplied;
   }
 
   ngOnDestroy(): void {

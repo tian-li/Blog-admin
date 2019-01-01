@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 const modules = [
   MatButtonModule,
@@ -26,6 +27,7 @@ const modules = [
   MatTooltipModule,
   MatCheckboxModule,
   MatDialogModule,
+  MatDividerModule,
 ];
 
 @NgModule({

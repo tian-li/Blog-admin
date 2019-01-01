@@ -15,7 +15,7 @@ export class BlogService {
   constructor(private firebaseService: FirebaseService) {
     this.blogsCollection = firebaseService.blogsCollectionRef;
     this.orderedBlogsCollection = firebaseService.blogsCollectionRef.orderBy(
-      'createdDate',
+      'lastModified',
       'desc'
     );
   }
