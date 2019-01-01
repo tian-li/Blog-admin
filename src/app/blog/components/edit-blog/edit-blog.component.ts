@@ -133,7 +133,7 @@ export class EditBlogComponent implements OnInit, OnDestroy {
 
   delete(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '250px',
+      width: '400px',
       data: {
         title: '警告',
         message: '确认删除这篇文章吗？',
