@@ -6,9 +6,10 @@ export class Blog {
   content: string;
   createdDate: string;
   summary: string;
-  tags: string[];
   lastModified: string;
   isDraft: boolean;
+  deleted: boolean;
+  tags: string[];
 
   constructor(blog: any) {
     this.id = blog.id;
@@ -17,12 +18,9 @@ export class Blog {
     this.summary = blog.summary;
     this.createdDate = blog.createdDate;
     this.lastModified = blog.lastModified;
-    if (!!blog.tags) {
-      this.tags = blog.tags;
-    } else {
-      this.tags = [];
-    }
     this.isDraft = blog.isDraft === true ? true : false;
+    this.deleted = blog.deleted;
+    this.tags = !!blog.tags ? blog.tags : [];
   }
 
   get createdDateDisplay(): string {

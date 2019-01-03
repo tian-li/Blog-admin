@@ -60,20 +60,23 @@
       padding-right: 10px;
       border-right: 1px #dadada solid;
     }
-    mat-icon {
-      cursor: pointer;
-      &.cancel:hover {
-        color: red;
-      }
-      &.save:hover {
-        color: green;
-      }
-      &.preview {
-        vertical-align: -5px;
-      }
-      &.preview:hover {
-        color: blue;
-      }
+    .cancel:hover {
+      color: red;
+    }
+    .publish:hover {
+      color: green;
+    }
+    .draft:hover {
+      color: green;
+    }
+    .preview {
+      vertical-align: -5px;
+    }
+    .preview:hover {
+      color: blue;
+    }
+    .trash:hover {
+      color: red;
     }
   }
 

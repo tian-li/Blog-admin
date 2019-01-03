@@ -1,0 +1,38 @@
+.blog-actions {
+  width: 300px;
+  padding-left: 20px;
+  padding-right: 20px;
+  & button {
+    margin-top: 20px;
+  }
+}
+
+.blog-list {
+  width: 300px;
+
+  .blog-list-item {
+    line-height: 1.5em;
+    cursor: pointer;
+
+    & .blog_list_blog_tag {
+      display: inline-block;
+      margin-left: 5px;
+    }
+  }
+
+  .blog-list-item:hover {
+    color: #076da6;
+  }
+
+  .blog-list-item:focus {
+    outline: none;
+  }
+
+  mat-list-item.active {
+    color: blue;
+  }
+
+  .draft {
+    color: green;
+  }
+}

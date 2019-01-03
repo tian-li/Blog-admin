@@ -1,0 +1,41 @@
+<div fxLayout="column">
+  <div class="blog-actions" fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="center center">
+    <div fxFlex>
+      <button mat-raised-button routerLink="./blog/new" color="primary">New Blog</button>
+    </div>
+    <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-around center">
+      <div fxFlex>
+        <mat-checkbox (change)="toggleDraft($event)" class="unselectable"
+          >Drafts</mat-checkbox
+        >
+      </div>
+      <div fxFlex>
+        <mat-checkbox (change)="toggleTrash($event)" class="unselectable"
+          >Trash</mat-checkbox
+        >
+      </div>
+    </div>
+  </div>
+  <div fxFlex>
+    <mat-list class="blog-list">
+      <mat-list-item
+        *ngFor="let blog of filteredBlogs"
+        mat-list-item
+        class="blog-list-item"
+        matTooltip="{{ blog.title }}"
+        [ngClass]="{ draft: blog.isDraft }"
+        [routerLink]="['./blog', blog.id, 'edit']"
+        routerLinkActive="active"
+      >
+        <mat-icon matPrefix *ngIf="blog.isDraft">drafts</mat-icon>
+        <mat-icon matPrefix *ngIf="blog.deleted">delete</mat-icon>
+        <h2 matLine class="blog_list_blog_title">{{ blog.title }}</h2>
+        <p matLine>
+          <small class="blog_list_createed_date">{{ blog?.createdDateDisplay }}</small>
+          <small *ngFor="let tag of blog.tags" class="blog_list_blog_tag">#{{ tag }}</small>
+        </p>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

@@ -3,6 +3,8 @@ import {
   createFeatureSelector,
   ActionReducerMap,
 } from '@ngrx/store';
+import { filter } from 'lodash';
+
 import * as fromBlog from './blog.reducer';
 
 export interface BlogState {
@@ -54,12 +56,12 @@ export const getSelectedBlog = createSelector(
   }
 );
 
-export const getAllBlogCreateTimes = createSelector(
-  getBlogEntitiesState,
-  fromBlogs => fromBlogs.allBlogCreateTimes
-);
+export const getNonDeletedBlogs = createSelector(
+  getBlogEntities,
+  entities => filter(entities, entity => !entity.deleted)
+)
 
-export const getBlogCreateTimeAtPosition = createSelector(
-  getBlogEntitiesState,
-  (fromBlogs, props) => fromBlogs.allBlogCreateTimes[props.position]
-);
+export const getDeletedBlogs = createSelector(
+  getBlogEntities,
+  entities => filter(entities, entity => entity.deleted === true)
+)

@@ -15,7 +15,7 @@ export class BlogService {
   constructor(private firebaseService: FirebaseService) {
     this.blogsCollection = firebaseService.blogsCollectionRef;
     this.orderedBlogsCollection = firebaseService.blogsCollectionRef.orderBy(
-      'createdDate',
+      'lastModified',
       'desc'
     );
   }
@@ -70,9 +70,19 @@ export class BlogService {
   }
 
   editBlog(id: string, blog: any): Observable<Blog> {
+    console.log('blog to edit', blog);
     return from(this.blogsCollection.doc(id).update(blog)).pipe(
-      switchMap((data: any) => {
+      switchMap(() => {
         return of(new Blog({ id, ...blog }));
+      })
+    );
+  }
+
+  deleteBlog(blog: Blog): Observable<Blog> {
+    console.log('blog to delete', blog);
+    return from(this.blogsCollection.doc(blog.id).update({deleted: true})).pipe(
+      switchMap(() => {
+        return of(new Blog({ ...blog, deleted: true }));
       })
     );
   }

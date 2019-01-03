@@ -5,7 +5,6 @@ import { BlogActionTypes, BlogActionsUnion } from '../actions/blog.actions';
 
 export interface State extends EntityState<Blog> {
   allBlogCount: number;
-  allBlogCreateTimes: number[];
   errorMessage: string;
   selectedBlogId: string;
 }
@@ -17,7 +16,6 @@ export const adapter: EntityAdapter<Blog> = createEntityAdapter<Blog>({
 
 export const initialState: State = adapter.getInitialState({
   allBlogCount: 0,
-  allBlogCreateTimes: [],
   errorMessage: undefined,
   selectedBlogId: undefined,
 });
@@ -28,7 +26,8 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
     case BlogActionTypes.LOAD_ALL_BLOGS:
     case BlogActionTypes.LOAD_ONE_BLOG:
     case BlogActionTypes.ADD_BLOG:
-    case BlogActionTypes.EDIT_BLOG: {
+    case BlogActionTypes.EDIT_BLOG:
+    case BlogActionTypes.DELETE_BLOG: {
       return {
         ...state,
         selectedBlogId: undefined,
@@ -38,20 +37,22 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
     case BlogActionTypes.LOAD_ALL_BLOGS_FAIL:
     case BlogActionTypes.LOAD_ONE_BLOG_FAIL:
     case BlogActionTypes.ADD_BLOG_FAIL:
-    case BlogActionTypes.EDIT_BLOG_FAIL: {
+    case BlogActionTypes.EDIT_BLOG_FAIL:
+    case BlogActionTypes.DELETE_BLOG_FAIL: {
       return {
         ...state,
         errorMessage: action.payload,
       };
     }
     case BlogActionTypes.LOAD_ALL_BLOGS_SUCCESS: {
-      return adapter.addAll(action.payload, { ...state, errorMessage: 'Success' });
+      return adapter.addAll(action.payload, {
+        ...state,
+      });
     }
     case BlogActionTypes.LOAD_ONE_BLOG_SUCCESS: {
       return adapter.addOne(action.payload, {
         ...state,
         selectedBlogId: action.payload.id,
-        errorMessage: 'Success',
       });
     }
     case BlogActionTypes.ADD_BLOG_SUCCESS: {
@@ -60,7 +61,8 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
         errorMessage: 'Success',
       });
     }
-    case BlogActionTypes.EDIT_BLOG_SUCCESS: {
+    case BlogActionTypes.EDIT_BLOG_SUCCESS:
+    case BlogActionTypes.DELETE_BLOG_SUCCESS: {
       return adapter.updateOne({ id: action.id, changes: action.changes }, {
         ...state,
         errorMessage: 'Success',
@@ -74,4 +76,3 @@ export function reducer(state = initialState, action: BlogActionsUnion): State {
 
 export const getSelectedBlogId = (state: State) => state.selectedBlogId;
 export const getAllBlogCount = (state: State) => state.allBlogCount;
-export const getAllBlogCreateTimes = (state: State) => state.allBlogCreateTimes;

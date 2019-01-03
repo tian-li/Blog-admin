@@ -15,18 +15,29 @@
 
     <div class="editor-controls" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
       <div>
-        <mat-icon class="cancel" (click)="back()">keyboard_backspace</mat-icon>
+        <button mat-icon-button class="cancel" matTooltip="Cancel" (click)="back()">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
       </div>
       <div>
-        <mat-icon class="save" (click)="save(false)">save</mat-icon>
+        <button mat-icon-button class="publish" matTooltip="Publish" (click)="save(false)">
+          <mat-icon>publish</mat-icon>
+        </button>
       </div>
       <div>
-        <mat-icon class="save-draft" (click)="save(true)">drafts</mat-icon>
+        <button mat-icon-button class="draft" matTooltip="Save Draft" (click)="save(true)">
+          <mat-icon>drafts</mat-icon>
+        </button>
       </div>
       <div>
-        <mat-slide-toggle [labelPosition]="'before'" (change)="togglePreview()" [checked]="showPreview">
+        <mat-slide-toggle [labelPosition]="'before'" matTooltip="Toggle Preview" (change)="togglePreview()" [checked]="showPreview">
           <mat-icon class="preview">{{showPreview ? 'visibility' : 'visibility_off'}}</mat-icon>
         </mat-slide-toggle>
+      </div>
+      <div>
+        <button mat-icon-button class="trash" matTooltip="Move to Trash" (click)="delete()" [disabled]="!blogId">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
     </div>
 

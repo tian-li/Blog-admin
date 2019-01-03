@@ -21,6 +21,9 @@ import {
   EditBlog,
   EditBlogSuccess,
   EditBlogFail,
+  DeleteBlog,
+  DeleteBlogSuccess,
+  DeleteBlogFail,
 } from '../actions/blog.actions';
 import { BlogService } from '../service/blog.service';
 
@@ -77,6 +80,21 @@ export class BlogEffects {
           return new EditBlogSuccess(blog.id, blog);
         }),
         catchError((err: any) => of(new EditBlogFail(err))),
+      );
+    })
+  );
+
+  @Effect()
+  deleteBlog$: Observable<Action> = this.actions$.pipe(
+    ofType<DeleteBlog>(BlogActionTypes.DELETE_BLOG),
+    map((action: DeleteBlog) => action.payload),
+    switchMap((payload: {blog: Blog}) => {
+      return this.blogService.deleteBlog(payload.blog)
+      .pipe(
+        map((blog: Blog) => {
+          return new DeleteBlogSuccess(blog.id, blog);
+        }),
+        catchError((err: any) => of(new DeleteBlogFail(err))),
       );
     })
   );
