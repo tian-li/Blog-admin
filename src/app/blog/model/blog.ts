@@ -19,7 +19,7 @@ export class Blog {
     this.createdDate = blog.createdDate;
     this.lastModified = blog.lastModified;
     this.isDraft = blog.isDraft === true ? true : false;
-    this.deleted = blog.deleted;
+    this.deleted = blog.deleted ? blog.deleted : false;
     this.tags = !!blog.tags ? blog.tags : [];
   }
 

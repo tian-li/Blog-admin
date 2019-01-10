@@ -113,6 +113,7 @@ export class EditBlogComponent implements OnInit, OnDestroy {
       isDraft,
       title: formValue.title,
       content: formValue.content,
+      deleted: false,
       lastModified: new Date().valueOf(),
       tags: this.tags,
     };
